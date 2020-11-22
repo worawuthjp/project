@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 var dateFormat = require('dateformat');
+const { request } = require('express');
 var now = new Date();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -93,15 +94,28 @@ app.post('/save/sow',(req,res)=>{
   var dam = req.body.dam;
   var origin = req.body.origin;
   var farmID = req.body.farmID;
+  var sowCode = req.body.sowCode;
 
-  var sql = "INSERT INTO sow (recType,birthDate,breed,sire,dam,origin,farmID,created_at,updated_at) VALUES('"+recType+"','"+birthDate+"','"+breed+"','"+sire+"','"+dam+"','"+origin+"','"+farmID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
+  var sql = "INSERT INTO sow (sowCode,recType,birthDate,breed,sire,dam,origin,farmID,created_at,updated_at) VALUES('"+sowCode+"','"+recType+"','"+birthDate+"','"+breed+"','"+sire+"','"+dam+"','"+origin+"','"+farmID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
   console.log(sql);
   con.query(sql,function(err,result,field){
     if(err) throw err;
-    var data = JSON.stringify({'status':'sucess'});
+    var data = JSON.stringify({'status':'success'});
     res.send(data);
   });
 });
+app.post('/update/sow/pair',(req,res)=>{
+    var sowcode = req.query.sowcode;
+    var uhf = req.query.uhf;
+    console.log(req.query);
+    var sql = "UPDATE sow SET uhf='"+uhf+"' WHERE sowCode= '"+sowcode+"'";
+    con.query(sql,function(err,result,field){
+      var data = JSON.stringify({'status':'success'});
+      res.send(data);
+    });
+  });
+
+
 
 app.get('/get/sow/All',(req,res) => {
   var sql = "SELECT * FROM sow WHERE isDel = 0";
@@ -257,6 +271,16 @@ app.post('/save/sowsemen',(req,res)=>{
     res.send(data);
   });
 });
-app.listen(8080, () => {
-  console.log('Start server at port 80.')
+app.get('/ADD/NFC',(req,res)=>{
+  var NFC = req.query.nfcid;
+
+  var sql = "INSERT INTO nfc_record(nfc,created_at) values ('"+NFC+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
+  con.query(sql,function(err,result,field){
+    if(err) throw err;
+    var data = JSON.stringify({'status':'sucess'});
+    res.send(data);
+  });
+});
+app.listen(8000, () => {
+  console.log('Start server at port 8000.')
 })
