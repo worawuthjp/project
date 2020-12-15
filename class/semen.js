@@ -1,3 +1,5 @@
+const { sprintf } = require("sprintf-js");
+
 module.exports = function(app,con){
 
   app.get('/get/sowsemen/All',(req,res) => {
@@ -56,6 +58,19 @@ module.exports = function(app,con){
       var data = JSON.stringify({'status':'sucess'});
       res.send(data);
     });
+  });
+
+  app.post('/delete/sowsemen',(req,res)=>{
+    var id = req.body.id;
+    var sql = sprintf("UPDATE sowsemen SET isDel=1 WHERE sowSemenID='%s'",id);
+    con.query(sql,(err,result,field)=>{
+      if(err) throw err;
+      if(result){
+        res.send({"status":"success"});
+      }else{
+        res.send({"status":"errors"});
+      }
+    })
   });
       
 }

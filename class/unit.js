@@ -1,3 +1,5 @@
+const { sprintf } = require('sprintf-js');
+
 module.exports = function(app,con){
 
   app.post('/add/unit',(req,res)=>{
@@ -33,6 +35,42 @@ module.exports = function(app,con){
     })
   });
   
+  app.post('/delete/unit',(req,res)=>{
+    var id = req.body.unit;
+    var sql = sprintf("UPDATE block SET isDel='1' WHERE unitID='%s'",id);
+    con.query(sql,(err,result,field)=>{
+      if(err) throw err;
+      if(result){
+        sql = sprintf("UPDATE unit SET isDel=1 WHERE unitID='%s'",id);
+        con.query(sql,(err,result,field)=>{
+          if(err) throw err
+          if(result){
+            res.send({"status":"success"});
+          }else{
+            res.send({"status":"errors"});
+          }
+        })
+      }else{
+        res.send({"status":"errors"});
+      }
+    })
+  });
+
+  app.post('/update/unit',(req,res)=>{
+    var id = req.body.id;
+    var unitCode = req.body.unitCode;
+    var unitName = req.body.unitName;
+    var sql = sprintf("UPDATE unit SET unitCode='%s',unitName='%s' WHERE unitID='%s'",unitCode,unitName,id);
+    con.query(sql,(err,result,field)=>{
+      if(err) throw err;
+      if(result){
+        res.send({"status":"success"});
+      }else{
+        res.send({"status":"errors"});
+      }
+    });
+  });
+
   require('./block')(app,con)
-      
+
 }

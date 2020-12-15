@@ -1,3 +1,5 @@
+const { sprintf } = require("sprintf-js");
+
 module.exports = function(app,con){
 
   app.post('/add/user',(req,res) => {
@@ -84,4 +86,39 @@ module.exports = function(app,con){
     });
   
   });
+  app.post('/update/user',(req,res)=>{
+    var id = req.body.id;
+    var username = req.body.username;
+    var password = req.body.password;
+    var email = req.body.email;
+    var fname = req.body.fname;
+    var lname = req.body.lname;
+    var pre = req.body.pre;
+    var birthDate = req.body.birthDate;
+    var sql = sprintf("UPDATE user SET username='%s',password = '%s',email-'%s',fname='%s',lname='%s',pre='%s',birthDate='%s' WHERE userID='%s' ",username,password,email,fname,lname,pre,birthDate,id);
+    con.query(sql,(err,result,field)=>{
+      if (err) throw err;
+      if(result){
+        res.send({"status":"success"});
+      }else{
+        res.send({"status":"errors"});
+      }
+    })
+
+  });
+
+  app.post('/delete/user',(req,res)=>{
+    var id = req.body.id;
+    var sql = sprintf("UPDATE user SET isDel=1 WHERE userID='%s'",id);
+    con.query(sql,(err,result,field)=>{
+      if(err) throw err;
+      if(result){
+        res.send({"status":"success"});
+      }else{
+        res.send({"status":"errors"});
+      }
+    })
+  });
+
+  
 }
