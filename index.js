@@ -33,6 +33,9 @@ require('./class/semen')(app,con)
 //sow/matting
 require('./class/matting')(app,con)
 
+//sow/sowbirth
+require('./class/sowBirth')(app,con)
+
 app.listen(8000, () => {
   console.log('Start server at port 8000.')
 })
