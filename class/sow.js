@@ -1,3 +1,7 @@
+const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
+
 module.exports = function(app,con){
 
   app.post('/add/sow',(req,res)=>{
@@ -46,8 +50,8 @@ module.exports = function(app,con){
   
   });
   
-  app.get('/get/sow/:id',(req,res) => {
-    var sowID = req.params.id;
+  app.get('/get/sow/ID',(req,res) => {
+    var sowID = req.body.id;
     var sql = "SELECT * FROM sow WHERE sowID='"+sowID+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -56,8 +60,8 @@ module.exports = function(app,con){
     })
   });
   
-  app.get('/get/sow/UHF/:id',(req,res) => {
-    var UHF = req.params.id;
+  app.get('/get/sow/UHF',(req,res) => {
+    var UHF = req.body.id;
     var sql = "SELECT * FROM sow WHERE uhf='"+UHF+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -66,8 +70,8 @@ module.exports = function(app,con){
     })
   });
   
-  app.get('/getID/sow/UHF/:id',(req,res) => {
-    var UHF = req.params.id;
+  app.get('/getID/sow/UHF',(req,res) => {
+    var UHF = req.body.id;
     var sql = "SELECT sowID FROM sow WHERE uhf='"+UHF+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -81,8 +85,8 @@ module.exports = function(app,con){
     })
   });
   
-  app.get('/get/sow/sowCode/:id',(req,res) => {
-    var sowCode = req.params.id;
+  app.get('/get/sow/sowCode',(req,res) => {
+    var sowCode = req.body.id;
     var sql = "SELECT * FROM sow WHERE sowCode='"+sowCode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -91,9 +95,9 @@ module.exports = function(app,con){
     })
   });
 
-  app.post('/delete/sow/id',(req,res) => {
+  app.post('/delete/sow',(req,res) => {
     var sowID =  req.body.id
-    var sql = "UPDATE sow SET isDel = 1 WHERE sowID = '"+sowID+"' and isDel = 0";
+    var sql = "DELETE FROM sow WHERE sowID = '"+sowID+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       if(result){

@@ -1,4 +1,6 @@
-const { sprintf } = require('sprintf-js');
+const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
 
@@ -25,8 +27,8 @@ module.exports = function(app,con){
     });
   });
   
-  app.get('/get/unit/:id',(req,res) => {
-    var unitID = req.params.id;
+  app.get('/get/unit/ID',(req,res) => {
+    var unitID = req.body.id;
     var sql = "SELECT * FROM unit WHERE unitID='"+unitID+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -37,7 +39,7 @@ module.exports = function(app,con){
   
   app.post('/delete/unit',(req,res)=>{
     var id = req.body.unit;
-    var sql = sprintf("UPDATE block SET isDel='1' WHERE unitID='%s'",id);
+    var sql = sprintf("DELETE block SET isDel='1' WHERE unitID='%s'",id);
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       if(result){

@@ -1,4 +1,6 @@
 const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
 
@@ -47,9 +49,9 @@ module.exports = function(app,con){
     });
   });
   
-  app.get('/get/user/ID/:id',(req,res) => {
-    var sql = "SELECT userID,username,email,fname,lname,pre,birthDate,farmID,typeUserID FROM user WHERE userID = '"+req.params.id+"' and isDel=0";
-    console.log(req.params.id);
+  app.get('/get/user/ID',(req,res) => {
+    var sql = "SELECT userID,username,email,fname,lname,pre,birthDate,farmID,typeUserID FROM user WHERE userID = '"+req.body.id+"' and isDel=0";
+    console.log(req.body.id);
     con.query(sql,function(err,result,filed){
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -57,8 +59,8 @@ module.exports = function(app,con){
     });
   });
   
-  app.get('/getID/user/barcode/:id',(req,res) => {
-    var barcode = req.params.id;
+  app.get('/getID/user/barcode',(req,res) => {
+    var barcode = req.body.id;
     var sql = "SELECT userID FROM user WHERE username = '"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -76,8 +78,8 @@ module.exports = function(app,con){
     });
   
   });
-  app.get('/get/user/barcode/:id',(req,res) => {
-    var barcode = req.params.id;
+  app.get('/get/user/barcode',(req,res) => {
+    var barcode = req.body.id;
     var sql = "SELECT * FROM user WHERE username = '"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -109,7 +111,7 @@ module.exports = function(app,con){
 
   app.post('/delete/user',(req,res)=>{
     var id = req.body.id;
-    var sql = sprintf("UPDATE user SET isDel=1 WHERE userID='%s'",id);
+    var sql = sprintf("DELETE FROM user WHERE userID='%s'",id);
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       if(result){

@@ -1,4 +1,6 @@
 const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
     app.get('/get/sowbirth/All',(req,res)=>{
@@ -14,8 +16,8 @@ module.exports = function(app,con){
           }
         })
       });
-      app.get('/get/sowbirth/:id',(req,res) => {
-        var sowBirthID = req.params.id;
+      app.get('/get/sowbirth/ID',(req,res) => {
+        var sowBirthID = req.body.id;
         var sql = "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.isDel = 0 and sowbirth.sowBirthID = '"+sowBirthID +"'";
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -23,8 +25,8 @@ module.exports = function(app,con){
           res.send(data);
         })
       });
-      app.get('/get/sowbirth/sowID/:id',(req,res) => {
-        var sowID = req.params.id;
+      app.get('/get/sowbirth/sowID',(req,res) => {
+        var sowID = req.body.id;
         var sql = "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.isDel = 0 and sowbirth.sowID = '"+sowID +"'";
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -50,7 +52,7 @@ module.exports = function(app,con){
     });
     app.post('delete/sowBirth',(req,res)=>{
         var id = req.body.id;
-        var sql = sprintf("UPDATE sowbirth SET isDel=1 WHERE sowBirthID='%s'",id);
+        var sql = sprintf("DELETE FROM sowbirth WHERE sowBirthID='%s'",id);
         con.query(sql,(err,result,field)=>{
           if(err) throw err;
           if(result)

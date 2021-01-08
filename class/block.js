@@ -1,5 +1,6 @@
 const { sprintf } = require("sprintf-js");
-
+var dateFormat = require('dateformat');
+var now = new Date();
 module.exports = function(app,con){
 
     app.post('/add/block',(req,res)=>{
@@ -26,8 +27,8 @@ module.exports = function(app,con){
       });
     });
     
-    app.get('/get/block/:id',(req,res) => {
-      var blockID = req.params.id;
+    app.get('/get/block/ID',(req,res) => {
+      var blockID = req.body.id;
       var sql = "SELECT * FROM block WHERE blockID='"+blockID+"' and isDel = 0";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -35,8 +36,8 @@ module.exports = function(app,con){
         res.send(data);
       })
     });
-    app.get('/get/block/RFID/:id',(req,res) => {
-      var blockCode = req.params.id;
+    app.get('/get/block/RFID',(req,res) => {
+      var blockCode = req.body.id;
       var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' and isDel = 0";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -47,7 +48,7 @@ module.exports = function(app,con){
 
     app.post('/delete/block',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("UPDATE block SET isDel=1 WHERE blockID='%s'",id);
+      var sql = sprintf("DELETE FROM block WHERE blockID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){
