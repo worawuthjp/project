@@ -20,7 +20,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.parse(JSON.stringify(result));
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -34,7 +35,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.parse(JSON.stringify(result));
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -48,7 +50,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.parse(JSON.stringify(result));
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -62,7 +65,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.parse(JSON.stringify(result));
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
