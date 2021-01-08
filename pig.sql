@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 09, 2020 at 08:23 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.10
+-- Host: localhost
+-- Generation Time: Jan 08, 2021 at 12:49 PM
+-- Server version: 8.0.17
+-- PHP Version: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -33,10 +34,10 @@ CREATE TABLE `block` (
   `row` varchar(10) NOT NULL,
   `col` varchar(10) NOT NULL,
   `unitID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` int(11) NOT NULL DEFAULT current_timestamp(),
-  `updated_at` int(11) NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `block`
@@ -57,10 +58,10 @@ CREATE TABLE `farm` (
   `latitude` varchar(50) DEFAULT NULL,
   `longtitude` varchar(50) DEFAULT NULL,
   `ownerID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `farm`
@@ -68,6 +69,28 @@ CREATE TABLE `farm` (
 
 INSERT INTO `farm` (`farmID`, `farmname`, `latitude`, `longtitude`, `ownerID`, `isDel`, `created_at`, `updated_at`) VALUES
 (1, 'KU FARM', NULL, NULL, 1, 0, '2020-11-08 13:10:44', '2020-11-08 13:10:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nfc_record`
+--
+
+CREATE TABLE `nfc_record` (
+  `id` bigint(50) NOT NULL,
+  `nfc` varchar(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `isDel` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `nfc_record`
+--
+
+INSERT INTO `nfc_record` (`id`, `nfc`, `isDel`) VALUES
+(1, 'undefined', 0),
+(2, 'undefined', 0),
+(3, '1234', 0);
 
 -- --------------------------------------------------------
 
@@ -80,10 +103,10 @@ CREATE TABLE `owner` (
   `fname` varchar(50) NOT NULL,
   `lname` varchar(50) NOT NULL,
   `prename` varchar(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `owner`
@@ -109,17 +132,17 @@ CREATE TABLE `sow` (
   `dam` bigint(50) NOT NULL,
   `origin` varchar(15) NOT NULL,
   `farmID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `sow`
 --
 
 INSERT INTO `sow` (`sowID`, `uhf`, `sowCode`, `recType`, `birthDate`, `breed`, `sire`, `dam`, `origin`, `farmID`, `isDel`, `created_at`, `updated_at`) VALUES
-(2, '1111', '1111', 'S', '2020-11-01', 'ly', 1, 1, 'vcf', 1, 0, '2020-11-08 13:56:27', '2020-11-08 13:56:27');
+(2, '12345', '1111', 'S', '2020-11-01', 'ly', 1, 1, 'vcf', 1, 0, '2020-11-08 13:56:27', '2020-11-08 13:56:27');
 
 -- --------------------------------------------------------
 
@@ -132,12 +155,13 @@ CREATE TABLE `sowbirth` (
   `alive` int(11) NOT NULL,
   `died` int(11) NOT NULL,
   `mummy` int(11) NOT NULL,
+  `total_weight` double NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `userID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -147,13 +171,20 @@ CREATE TABLE `sowbirth` (
 
 CREATE TABLE `sowmating` (
   `sowMatingID` bigint(50) NOT NULL,
-  `sowSementID` bigint(50) NOT NULL,
+  `sowSemenID` bigint(50) NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `userID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` tinyint(1) NOT NULL DEFAULT current_timestamp(),
-  `updated_at` tinyint(1) NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` tinyint(1) NOT NULL,
+  `updated_at` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `sowmating`
+--
+
+INSERT INTO `sowmating` (`sowMatingID`, `sowSemenID`, `sowID`, `userID`, `isDel`, `created_at`, `updated_at`) VALUES
+(3, 1, 2, 2, 0, 127, 127);
 
 -- --------------------------------------------------------
 
@@ -167,10 +198,10 @@ CREATE TABLE `sowparty` (
   `num` int(11) NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `userID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -183,10 +214,10 @@ CREATE TABLE `sowsemen` (
   `barcode` varchar(25) NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `userID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `sowsemen`
@@ -206,10 +237,10 @@ CREATE TABLE `sowvaccine` (
   `vaccine` bigint(50) NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `userID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -221,10 +252,10 @@ CREATE TABLE `sow_block` (
   `sow_block_id` bigint(50) NOT NULL,
   `sowID` bigint(50) NOT NULL,
   `blockID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -235,10 +266,10 @@ CREATE TABLE `sow_block` (
 CREATE TABLE `type_user` (
   `typeUserID` bigint(50) NOT NULL,
   `typename` varchar(100) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `type_user`
@@ -258,10 +289,10 @@ CREATE TABLE `unit` (
   `unitCode` varchar(50) NOT NULL,
   `farmID` bigint(50) NOT NULL,
   `unitName` varchar(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `unit`
@@ -288,9 +319,9 @@ CREATE TABLE `user` (
   `farmID` bigint(50) NOT NULL,
   `typeUserID` bigint(50) NOT NULL,
   `isDel` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `user`
@@ -309,10 +340,10 @@ CREATE TABLE `vaccine` (
   `vaccineID` bigint(50) NOT NULL,
   `vaccineName` varchar(100) NOT NULL,
   `farmID` bigint(50) NOT NULL,
-  `isDel` tinyint(1) NOT NULL DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `isDel` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Indexes for dumped tables
@@ -331,6 +362,12 @@ ALTER TABLE `block`
 ALTER TABLE `farm`
   ADD PRIMARY KEY (`farmID`),
   ADD KEY `ownerID` (`ownerID`);
+
+--
+-- Indexes for table `nfc_record`
+--
+ALTER TABLE `nfc_record`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `owner`
@@ -358,9 +395,9 @@ ALTER TABLE `sowbirth`
 --
 ALTER TABLE `sowmating`
   ADD PRIMARY KEY (`sowMatingID`),
-  ADD KEY `sowSementID` (`sowSementID`,`sowID`),
   ADD KEY `userID` (`userID`),
-  ADD KEY `sowID` (`sowID`);
+  ADD KEY `sowID` (`sowID`),
+  ADD KEY `sowSemenID` (`sowSemenID`,`sowID`) USING BTREE;
 
 --
 -- Indexes for table `sowparty`
@@ -441,6 +478,12 @@ ALTER TABLE `farm`
   MODIFY `farmID` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `nfc_record`
+--
+ALTER TABLE `nfc_record`
+  MODIFY `id` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `owner`
 --
 ALTER TABLE `owner`
@@ -462,7 +505,7 @@ ALTER TABLE `sowbirth`
 -- AUTO_INCREMENT for table `sowmating`
 --
 ALTER TABLE `sowmating`
-  MODIFY `sowMatingID` bigint(50) NOT NULL AUTO_INCREMENT;
+  MODIFY `sowMatingID` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `sowparty`
@@ -547,7 +590,7 @@ ALTER TABLE `sowbirth`
 ALTER TABLE `sowmating`
   ADD CONSTRAINT `sowmating_ibfk_1` FOREIGN KEY (`sowID`) REFERENCES `sow` (`sowID`),
   ADD CONSTRAINT `sowmating_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`),
-  ADD CONSTRAINT `sowmating_ibfk_3` FOREIGN KEY (`sowSementID`) REFERENCES `sowsemen` (`sowSemenID`);
+  ADD CONSTRAINT `sowmating_ibfk_3` FOREIGN KEY (`sowSemenID`) REFERENCES `sowsemen` (`sowSemenID`);
 
 --
 -- Constraints for table `sowparty`
