@@ -51,7 +51,7 @@ module.exports = function(app,con){
   });
   
   app.get('/get/sow/ID',(req,res) => {
-    var sowID = req.body.id;
+    var sowID = req.query.id;
     var sql = "SELECT * FROM sow WHERE sowID='"+sowID+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -61,7 +61,7 @@ module.exports = function(app,con){
   });
   
   app.get('/get/sow/UHF',(req,res) => {
-    var UHF = req.body.id;
+    var UHF = req.query.id;
     var sql = "SELECT * FROM sow WHERE uhf='"+UHF+"' and isDel = 0";
     console.log(sql)
     con.query(sql,function(err,result,field){
@@ -72,7 +72,7 @@ module.exports = function(app,con){
   });
   
   app.get('/getID/sow/UHF',(req,res) => {
-    var UHF = req.body.id;
+    var UHF = req.query.id;
     var sql = "SELECT sowID FROM sow WHERE uhf='"+UHF+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -87,7 +87,7 @@ module.exports = function(app,con){
   });
   
   app.get('/get/sow/sowCode',(req,res) => {
-    var sowCode = req.body.id;
+    var sowCode = req.query.id;
     var sql = "SELECT * FROM sow WHERE sowCode='"+sowCode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
