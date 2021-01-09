@@ -6,7 +6,7 @@ module.exports = function(app,con){
 
     app.post('/add/sowmating',(req,res)=>{
         var sowSemenID = req.query.sowSemenID;
-        var sowID = req.queryy.sowID;
+        var sowID = req.query.sowID;
         var userID = req.query.userID;
       
         var sql = "INSERT INTO sowmating(sowSemenID,sowID,userID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
