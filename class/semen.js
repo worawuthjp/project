@@ -15,7 +15,7 @@ module.exports = function(app,con){
   
   
   app.get('/get/sowsemen/ID',(req,res) => {
-    var sowSemenID = req.body.id;
+    var sowSemenID = req.query.id;
     var sql = "SELECT * FROM sowsemen WHERE sowSemenID='"+sowSemenID+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -25,7 +25,7 @@ module.exports = function(app,con){
   });
   
   app.get('/getID/sowsemen/barcode',(req,res) => {
-    var barcode = req.body.id;
+    var barcode = req.query.id;
     var sql = "SELECT sowSemenID FROM sowsemen WHERE barcode='"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -40,7 +40,7 @@ module.exports = function(app,con){
   
   
   app.get('/get/sowsemen/barcode',(req,res) => {
-    var barcode = req.body.id;
+    var barcode = req.query.id;
     var sql = "SELECT * FROM sowsemen WHERE barcode='"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
