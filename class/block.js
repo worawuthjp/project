@@ -19,7 +19,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/block/All',(req,res) => {
-      var sql = "SELECT * FROM block WHERE isDel = 0";
+      var sql = "SELECT * FROM block INNER JOIN unit ON unit.unitID = block.unitID WHERE block.isDel = 0";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -29,7 +29,7 @@ module.exports = function(app,con){
     
     app.get('/get/block/ID',(req,res) => {
       var blockID = req.body.id;
-      var sql = "SELECT * FROM block WHERE blockID='"+blockID+"' and isDel = 0";
+      var sql = "SELECT * FROM block INNER JOIN unit ON unit.unitID = block.unitID WHERE blockID='"+blockID+"' and block.isDel = 0";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -38,7 +38,7 @@ module.exports = function(app,con){
     });
     app.get('/get/block/RFID',(req,res) => {
       var blockCode = req.body.id;
-      var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' and isDel = 0";
+      var sql = "SELECT * FROM block INNER JOIN unit ON unit.unitID = block.unitID WHERE blockCode='"+blockCode+"' and block.isDel = 0";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);

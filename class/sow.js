@@ -63,6 +63,7 @@ module.exports = function(app,con){
   app.get('/get/sow/UHF',(req,res) => {
     var UHF = req.body.id;
     var sql = "SELECT * FROM sow WHERE uhf='"+UHF+"' and isDel = 0";
+    console.log(sql)
     con.query(sql,function(err,result,field){
       if(err) throw err;
       var data = JSON.stringify(result);
