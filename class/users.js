@@ -51,7 +51,7 @@ module.exports = function(app,con){
   
   app.get('/get/user/ID',(req,res) => {
     var sql = "SELECT userID,username,email,fname,lname,pre,birthDate,farmID,typeUserID FROM user WHERE userID = '"+req.body.id+"' and isDel=0";
-    console.log(req.body.id);
+    console.log(req.query.id);
     con.query(sql,function(err,result,filed){
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -60,7 +60,7 @@ module.exports = function(app,con){
   });
   
   app.get('/getID/user/barcode',(req,res) => {
-    var barcode = req.body.id;
+    var barcode = req.query.id;
     var sql = "SELECT userID FROM user WHERE username = '"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -79,7 +79,7 @@ module.exports = function(app,con){
   
   });
   app.get('/get/user/barcode',(req,res) => {
-    var barcode = req.body.id;
+    var barcode = req.query.id;
     var sql = "SELECT * FROM user WHERE username = '"+barcode+"' and isDel = 0";
     con.query(sql,function(err,result,field){
       if(err) throw err;
