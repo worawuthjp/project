@@ -42,8 +42,10 @@ module.exports = function(app,con){
         var died = req.body.died;
         var mummy = req.body.mummy;
         var total_weight = req.body.total_weight;
+        var created_at = dateFormat(now,'yyyy-mm-dd');
+        var updated_at = dateFormat(now,'yyyy-mm-dd');
 
-        var sql = sprintf("INSERT INTO sowbirth(alive,died,mummy,total_weight,sowID,userID,isDel,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s,'%s','%s','%s')",alive,died,mummy,total_weight,sowID,userID,isDel,created_at,updated_at);
+        var sql = sprintf("INSERT INTO sowbirth(alive,died,mummy,total_weight,sowID,userID,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s,'%s','%s','%s')",alive,died,mummy,total_weight,sowID,userID,created_at,updated_at);
         con.query(sql,function(err,result,filed){
           if(err) throw err;
           var data = JSON.stringify({"status":"success"});
