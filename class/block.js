@@ -36,7 +36,7 @@ module.exports = function(app,con){
         res.send(data);
       })
     });
-    app.get('/get/block/RFID',(req,res) => {
+    app.get('/get/block/barcode',(req,res) => {
       var blockCode = req.query.id;
       var sql = "SELECT * FROM block INNER JOIN unit ON unit.unitID = block.unitID WHERE blockCode='"+blockCode+"' and block.isDel = 0";
       con.query(sql,function(err,result,field){
