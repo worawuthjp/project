@@ -3,11 +3,10 @@ const { sprintf } = require('sprintf-js');
 module.exports = function(app,con){
 
   app.post('/add/unit',(req,res)=>{
-    var unitCode = req.body.unitCode;
     var farmID = req.body.farmID;
     var unitName = req.body.unitName;
   
-    var sql = "INSERT INTO unit (unitCode,farmID,unitName,created_at,updated_at) VALUES('"+unitCode+"','"+farmID+"','"+unitName+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
+    var sql = "INSERT INTO unit (unitName,farmID,created_at,updated_at) VALUES('"+unitName+"','"+farmID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
     console.log(sql);
     con.query(sql,function(err,result,field){
       if(err) throw err;
@@ -17,7 +16,7 @@ module.exports = function(app,con){
   });
  
   app.get('/get/unit/All',(req,res) => {
-    var sql = "SELECT * FROM unit WHERE isDel = 0";
+    var sql = "SELECT * FROM unit";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -25,9 +24,9 @@ module.exports = function(app,con){
     });
   });
   
-  app.get('/get/unit/:id',(req,res) => {
-    var unitID = req.params.id;
-    var sql = "SELECT * FROM unit WHERE unitID='"+unitID+"' and isDel = 0";
+  app.get('/get/unit',(req,res) => {
+    var unitID = req.body.id;
+    var sql = "SELECT * FROM unit WHERE unitID='"+unitID+"'";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -37,11 +36,11 @@ module.exports = function(app,con){
   
   app.post('/delete/unit',(req,res)=>{
     var id = req.body.unit;
-    var sql = sprintf("UPDATE block SET isDel='1' WHERE unitID='%s'",id);
+    var sql = sprintf("DELETE FROM block WHERE unitID='%s'",id);
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       if(result){
-        sql = sprintf("UPDATE unit SET isDel=1 WHERE unitID='%s'",id);
+        sql = sprintf("DELETE FROM unit WHERE unitID='%s'",id);
         con.query(sql,(err,result,field)=>{
           if(err) throw err
           if(result){

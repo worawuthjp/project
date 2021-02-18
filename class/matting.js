@@ -7,7 +7,7 @@ module.exports = function(app,con){
         var sowID = req.body.sowID;
         var userID = req.body.userID;
       
-        var sql = "INSERT INTO sowmating(sowSementID,sowID,userID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
+        var sql = "INSERT INTO sowmating(sowSementID,sowID,empID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
         con.query(sql,function(err,result,filed){
           if(err) throw err;
           var data = JSON.stringify({"status":"success"});
@@ -16,7 +16,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/sowmating/All',(req,res)=>{
-      var sql = "SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN user ON user.userID = sowmating.userID WHERE sowmating.isDel = 0";
+      var sql = "SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID";
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -28,9 +28,9 @@ module.exports = function(app,con){
       })
     });
 
-    app.get('/get/sowmating/id',(req,res)=>{
+    app.get('/get/sowmating',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN user ON user.userID = sowmating.userID WHERE sowmating.isDel = 0 and sowmating.sowMatingID='%s'",id);
+      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE sowmating.sowMatingID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -44,7 +44,7 @@ module.exports = function(app,con){
 
     app.get('/get/sowmating/sowDam',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN user ON user.userID = sowmating.userID WHERE sowmating.isDel = 0 and sow.recType='D' and sow.sowID='%s'",id);
+      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE sow.recType='D' and sow.sowID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -58,7 +58,7 @@ module.exports = function(app,con){
 
     app.get('/get/sowmating/sowSire',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN user ON user.userID = sowmating.userID WHERE sowmating.isDel = 0 and sow.recType='S' and sow.sowID='%s'",id);
+      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.employee = sowmating.empID WHERE sow.recType='S' and sow.sowID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -87,7 +87,7 @@ module.exports = function(app,con){
 
     app.post('delete/sowmating',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("UPDATE sowmating SET isDel=1 WHERE sowMatingID='%s'",id);
+      var sql = sprintf("DELETE FROM sowmating WHERE sowMatingID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result)

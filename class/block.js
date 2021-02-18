@@ -8,7 +8,7 @@ module.exports = function(app,con){
         var col = req.body.col;
         var unitID = req.body.unitID;
       
-        var sql = "INSERT INTO block (blockCode,row,col,unitID,created_at,updated_at) VALUES('"+blockCode+"','"+row+"','"+col+"','"+unitID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
+        var sql = "INSERT INTO unit_block (blockCode,row,col,unitID,created_at,updated_at) VALUES('"+blockCode+"','"+row+"','"+col+"','"+unitID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
         console.log(sql);
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -18,7 +18,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/block/All',(req,res) => {
-      var sql = "SELECT * FROM block WHERE isDel = 0";
+      var sql = "SELECT * FROM unit_block";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -26,18 +26,18 @@ module.exports = function(app,con){
       });
     });
     
-    app.get('/get/block/:id',(req,res) => {
-      var blockID = req.params.id;
-      var sql = "SELECT * FROM block WHERE blockID='"+blockID+"' and isDel = 0";
+    app.get('/get/block/id',(req,res) => {
+      var blockID = req.body.id;
+      var sql = "SELECT * FROM unit_block WHERE blockID='"+blockID+"'";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
         res.send(data);
       })
     });
-    app.get('/get/block/RFID/:id',(req,res) => {
-      var blockCode = req.params.id;
-      var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' and isDel = 0";
+    app.get('/get/block/RFID',(req,res) => {
+      var blockCode = req.body.id;
+      var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' ";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -47,7 +47,7 @@ module.exports = function(app,con){
 
     app.post('/delete/block',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("UPDATE block SET isDel=1 WHERE blockID='%s'",id);
+      var sql = sprintf("DELETE FROM unit_block WHERE blockID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){
@@ -63,7 +63,7 @@ module.exports = function(app,con){
       var blockCode = req.body.blockCode;
       var row = req.body.row;
       var col = req.body.col;
-      var sql = sprintf("UPDATE block SET blockCode='%s',row='%s',col='%s' WHERE blockID='%s'",blockCode,row,col,id);
+      var sql = sprintf("UPDATE unit_block SET blockCode='%s',row='%s',col='%s',updated_at = '%s' WHERE blockID='%s'",blockCode,row,col,dateFormat(now,'yyyy-mm-dd HH:MM:ss'),id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){
