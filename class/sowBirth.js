@@ -1,4 +1,6 @@
 const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
     app.get('/get/sowbirth/All',(req,res)=>{
@@ -14,6 +16,7 @@ module.exports = function(app,con){
           }
         })
       });
+      
       app.get('/get/sowbirth',(req,res) => {
         var sowBirthID = req.body.id;
         var sql = "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowBirthID = '"+sowBirthID +"'";
@@ -40,7 +43,8 @@ module.exports = function(app,con){
         var died = req.body.died;
         var mummy = req.body.mummy;
         var total_weight = req.body.total_weight;
-
+        var created_at = dateFormat(now,'yyyy-mm-dd');
+        var updated_at = dateFormat(now,'yyyy-mm-dd');
         var sql = sprintf("INSERT INTO sowbirth(sowID,alive,died,mummy,total_weight,empID,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s,'%s','%s')",sowID,alive,died,mummy,total_weight,userID,created_at,updated_at);
         con.query(sql,function(err,result,filed){
           if(err) throw err;

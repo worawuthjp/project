@@ -1,9 +1,11 @@
 const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
 
   app.get('/get/sowsemen/All',(req,res) => {
-    var sql = "SELECT * FROM sowsemen ";
+    var sql = "SELECT * FROM sowsemen INNER JOIN sow ON sow.sowID = sowsemen.sowID ";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -11,7 +13,7 @@ module.exports = function(app,con){
     });
   });
   
-  
+
   app.get('/get/sowsemen',(req,res) => {
     var sowSemenID = req.body.id;
     var sql = "SELECT * FROM sowsemen WHERE sowSemenID='"+sowSemenID+"'";

@@ -1,5 +1,6 @@
 const { sprintf } = require("sprintf-js");
-
+var dateFormat = require('dateformat');
+var now = new Date();
 module.exports = function(app,con){
 
     app.post('/add/block',(req,res)=>{
@@ -35,6 +36,7 @@ module.exports = function(app,con){
         res.send(data);
       })
     });
+
     app.get('/get/block/RFID',(req,res) => {
       var blockCode = req.body.id;
       var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' ";

@@ -1,10 +1,8 @@
-const con = require('./connect_mysql');
+const con = require('./connect_mysql1');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-var dateFormat = require('dateformat');
 const { request, json } = require('express');
-var now = new Date();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());

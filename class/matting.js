@@ -1,4 +1,6 @@
+var dateFormat = require('dateformat');
 const { sprintf } = require("sprintf-js");
+var now = new Date();
 
 module.exports = function(app,con){
 
@@ -6,7 +8,6 @@ module.exports = function(app,con){
         var sowSemenID = req.body.sowSemenID;
         var sowID = req.body.sowID;
         var userID = req.body.userID;
-      
         var sql = "INSERT INTO sowmating(sowSementID,sowID,empID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
         con.query(sql,function(err,result,filed){
           if(err) throw err;
@@ -20,7 +21,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.stringify(result);
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -34,7 +36,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.stringify(result);
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -48,7 +51,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.stringify(result);
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -62,7 +66,8 @@ module.exports = function(app,con){
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
-          res.send({"status":"success"});
+          var data = JSON.stringify(result);
+          res.send(data);
         }
         else{
           res.send({"status":"errors"});
@@ -71,11 +76,12 @@ module.exports = function(app,con){
     });
       
     app.post('/update/sowmating',(req,res)=>{
-      var id = req.body.id;
+      var id = req.query.id;
       var sowSemenID = req.body.sowSemenID;
       var sowID = req.body.sowID;
       var userID = req.body.userID;
-      var sql = sprintf("UPDATE sowmating SET sowSemenID='%s',sowID='%s',userID='%s' WHERE sowMatingID='%s",sowSemenID,sowID,userID.id);
+      var sql = sprintf("UPDATE sowmating SET sowSemenID='%s',sowID='%s',userID='%s' WHERE sowMatingID='%s'",sowSemenID,sowID,userID,id);
+      console.log(sql)
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result)

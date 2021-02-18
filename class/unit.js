@@ -1,4 +1,6 @@
-const { sprintf } = require('sprintf-js');
+const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
 

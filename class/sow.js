@@ -1,3 +1,7 @@
+const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
+
 module.exports = function(app,con){
 
   app.post('/add/sow',(req,res)=>{
@@ -74,7 +78,7 @@ module.exports = function(app,con){
     })
   });
 
-  app.post('/delete/sow/id',(req,res) => {
+  app.post('/delete/sow',(req,res) => {
     var sowID =  req.body.id
     var sql = "UPDATE sow SET isDel = 1 WHERE sowID = '"+sowID+"'";
     con.query(sql,function(err,result,field){

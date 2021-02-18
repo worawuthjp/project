@@ -1,4 +1,6 @@
 const { sprintf } = require("sprintf-js");
+var dateFormat = require('dateformat');
+var now = new Date();
 
 module.exports = function(app,con){
 
@@ -66,6 +68,7 @@ module.exports = function(app,con){
       res.send(data);
     });
   });
+
   app.get('/get/user/barcode',(req,res) => {
     var barcode = req.body.id;
     var sql = "SELECT * FROM employee INNER JOIN user ON user.empID = employee.empID WHERE employee.empCode = '"+barcode+"'";
