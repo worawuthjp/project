@@ -34,6 +34,15 @@ require('./class/matting')(app,con)
 //sow/sowbirth
 require('./class/sowBirth')(app,con)
 
+//sow/sowblock
+require('./class/sowblock')(app,con)
+
+//sow/vaccine
+require('./class/vaccine')(app,con)
+
+//sow/sowvaccine
+require('./class/sowVaccine')(app,con)
+
 app.listen(8000, () => {
   console.log('Start server at port 8000.')
 })
