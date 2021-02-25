@@ -38,7 +38,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.get('/get/sowVaccine/id',(req,res) => {
+    app.get('/get/sowVaccine',(req,res) => {
       var sowVaccineID = req.body.id;
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID WHERE sowVaccine.sowVaccineID='"+sowVaccineID+"' ";
       con.query(sql,function(err,result,field){

@@ -27,7 +27,7 @@ module.exports = function(app,con){
       });
     });
     
-    app.get('/get/vaccine/id',(req,res) => {
+    app.get('/get/vaccine',(req,res) => {
       var vaccineID = req.body.id;
       var sql = "SELECT * FROM vaccine WHERE vaccineID='"+vaccineID+"'";
       con.query(sql,function(err,result,field){
