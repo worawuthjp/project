@@ -28,7 +28,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/vaccine',(req,res) => {
-      var vaccineID = req.body.id;
+      var vaccineID = req.query.id;
       var sql = "SELECT * FROM vaccine WHERE vaccineID='"+vaccineID+"'";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -38,7 +38,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/vaccine/Barcode',(req,res) => {
-      var vaccineCode = req.body.id;
+      var vaccineCode = req.query.id;
       var sql = "SELECT * FROM vaccine WHERE vaccineCode='"+vaccineCode+"' ";
       con.query(sql,function(err,result,field){
         if(err) throw err;

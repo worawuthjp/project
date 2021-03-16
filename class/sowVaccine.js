@@ -29,7 +29,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/sowVaccine/All/unit',(req,res) => {
-      var unitID = req.body.id;
+      var unitID = req.query.id;
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID WHERE sow.sowID IN (SELECT sowblock.sowID FROM sowblock INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id WHERE sowblock.status = 1 and unit_block.unitID = '"+unitID+"')";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -39,7 +39,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/sowVaccine',(req,res) => {
-      var sowVaccineID = req.body.id;
+      var sowVaccineID = req.query.id;
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID WHERE sowVaccine.sowVaccineID='"+sowVaccineID+"' ";
       con.query(sql,function(err,result,field){
         if(err) throw err;

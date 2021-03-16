@@ -18,7 +18,7 @@ module.exports = function(app,con){
       });
       
       app.get('/get/sowbirth',(req,res) => {
-        var sowBirthID = req.body.id;
+        var sowBirthID = req.query.id;
         var sql = "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowBirthID = '"+sowBirthID +"'";
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -27,7 +27,7 @@ module.exports = function(app,con){
         })
       });
       app.get('/get/sowbirth/sowID',(req,res) => {
-        var sowID = req.body.id;
+        var sowID = req.query.id;
         var sql = "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowID = '"+sowID +"'";
         con.query(sql,function(err,result,field){
           if(err) throw err;

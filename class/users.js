@@ -107,8 +107,8 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user", (req, res) => {
-    var sql ="SELECT employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.password,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID WHERE employee.empID = '" +req.body.id +"'";
-    console.log(req.body.id);
+    var sql ="SELECT employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.password,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID WHERE employee.empID = '" +req.query.id +"'";
+    console.log(req.query.id);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       var data = JSON.stringify(result);
@@ -117,7 +117,7 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user/barcode", (req, res) => {
-    var barcode = req.body.id;
+    var barcode = req.query.id;
     var sql =
     "SELECT * FROM employee INNER JOIN user ON user.empID = employee.empID WHERE employee.empCode = '" +barcode +"'";
     con.query(sql, function (err, result, field) {

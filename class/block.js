@@ -28,7 +28,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/block/id',(req,res) => {
-      var blockID = req.body.id;
+      var blockID = req.query.id;
       var sql = "SELECT * FROM unit_block WHERE blockID='"+blockID+"'";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -38,7 +38,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/block/RFID',(req,res) => {
-      var blockCode = req.body.id;
+      var blockCode = req.query.id;
       var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' ";
       con.query(sql,function(err,result,field){
         if(err) throw err;

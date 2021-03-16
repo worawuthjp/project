@@ -18,7 +18,7 @@ module.exports = function(app,con){
       });
       
       app.get('/get/sowblock',(req,res) => {
-        var sowBlockID = req.body.id;
+        var sowBlockID = req.query.id;
         var sql = "SELECT * FROM sowblock INNER JOIN sow ON sow.sowID = sowblock.sowID INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id where sowblock.sow_block_id = '"+sowBlockID +"'";
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -28,7 +28,7 @@ module.exports = function(app,con){
       });
 
       app.get('/get/sowblock/active',(req,res) => {
-        var sowBlockID = req.body.id;
+        var sowBlockID = req.query.id;
         var sql = "SELECT * FROM sowblock INNER JOIN sow ON sow.sowID = sowblock.sowID INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id where sowblock.sow_block_id = '"+sowBlockID +"' and sowblock.status = 1";
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -38,7 +38,7 @@ module.exports = function(app,con){
       });
 
       app.get('/get/sowblock/deactive',(req,res) => {
-        var sowBlockID = req.body.id;
+        var sowBlockID = req.query.id;
         var sql = "SELECT * FROM sowblock INNER JOIN sow ON sow.sowID = sowblock.sowID INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id where sowblock.sow_block_id = '"+sowBlockID +"' and sowblock.status = 0";
         con.query(sql,function(err,result,field){
           if(err) throw err;

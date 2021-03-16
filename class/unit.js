@@ -27,7 +27,7 @@ module.exports = function(app,con){
   });
   
   app.get('/get/unit',(req,res) => {
-    var unitID = req.body.id;
+    var unitID = req.query.id;
     var sql = "SELECT * FROM unit WHERE unitID='"+unitID+"'";
     con.query(sql,function(err,result,field){
       if(err) throw err;
