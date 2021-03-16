@@ -26,7 +26,7 @@ module.exports = function(app,con){
   
   app.get('/get/sowsemen/barcode',(req,res) => {
     var barcode = req.query.id;
-    var sql = "SELECT * FROM sowsemen WHERE sowsemen.SemenBarcode='"+barcode+"'";
+    var sql = "SELECT * FROM sowsemen INNER JOIN sow ON sow.sowID = sowsemen.sowID WHERE sowsemen.SemenBarcode='"+barcode+"'";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       var data = JSON.stringify(result);
