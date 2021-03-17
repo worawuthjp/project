@@ -17,8 +17,35 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/employee/All", (req, res) => {
-    var sql ="SELECT * FROM employee INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID";
+    var sql ="SELECT * FROM employee INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID INNER JOIN unit ON unit.unitID = employee.unitID";
     con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      if (result.length > 0) {
+        res.send(JSON.stringify(result));
+      } else {
+        res.send({ status: "not found data" });
+      }
+    });
+  });
+
+  app.get("/get/employee", (req, res) => {
+    var id = req.query.id;
+    var sql ="SELECT * FROM employee INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE employee.empID = '"+id+"'";
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      if (result.length > 0) {
+        res.send(JSON.stringify(result));
+      } else {
+        res.send({ status: "not found data" });
+      }
+    });
+  });
+
+  app.get("/get/employee/barcode", (req, res) => {
+    var id = req.query.barcode;
+    var sql ="SELECT * FROM employee INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE employee.empCode = '"+id+"'";
+    con.query(sql, (err, result, filed) => {
+      console.log(sql);
       if (err) throw err;
       if (result.length > 0) {
         res.send(JSON.stringify(result));
@@ -60,8 +87,11 @@ module.exports = function (app, con) {
   app.post("/check/user", (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
-    var sql =
-    "SELECT * FROM user WHERE username='" +username +"' and password = '" +password +"'";
+    if (req.query.username && req.query.password){
+      username = req.query.username;
+      password = req.query.password;
+    }
+    var sql ="SELECT * FROM user WHERE username='" +username +"' and password = '" +password +"'";
     console.log(sql);
     con.query(sql, function (err, result, field) {
       if (err) throw err;
@@ -93,7 +123,7 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user/All", (req, res) => {
-    var sql = "SELECT employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.password,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID";
+    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID ";
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       if (result.length != 0) {
@@ -107,7 +137,7 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user", (req, res) => {
-    var sql ="SELECT employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.password,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID WHERE employee.empID = '" +req.query.id +"'";
+    var sql ="SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE employee.empID = '" +req.query.id +"'";
     console.log(req.query.id);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
@@ -119,7 +149,7 @@ module.exports = function (app, con) {
   app.get("/get/user/barcode", (req, res) => {
     var barcode = req.query.id;
     var sql =
-    "SELECT * FROM employee INNER JOIN user ON user.empID = employee.empID WHERE employee.empCode = '" +barcode +"'";
+    "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.created_at,employee.updated_at,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN unit ON unit.unitID = employee.unitID  WHERE employee.empCode = '" +barcode +"'";
     con.query(sql, function (err, result, field) {
       if (err) throw err;
       var data = JSON.stringify(result);

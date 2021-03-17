@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2021 at 06:27 AM
+-- Generation Time: Mar 17, 2021 at 01:44 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.13
 
@@ -35,16 +35,29 @@ CREATE TABLE `employee` (
   `empCode` varchar(50) DEFAULT NULL,
   `farmID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
-  `pic_path` varchar(100) DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `pic_path` varchar(100) DEFAULT NULL,
+  `unitID` bigint(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empID`, `fname`, `lname`, `preID`, `empCode`, `farmID`, `created_at`, `updated_at`, `pic_path`) VALUES
-(1, 'Employee', 'Test', 1, 'TEST001', 1, '2021-02-18 06:47:50', '2021-02-18 06:47:50', NULL);
+INSERT INTO `employee` (`empID`, `fname`, `lname`, `preID`, `empCode`, `farmID`, `created_at`, `updated_at`, `pic_path`, `unitID`) VALUES
+(1, 'Employee', 'Test', 1, 'TEST001', 1, '2021-02-18 06:47:50', '2021-02-18 06:47:50', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `emp_unit`
+--
+
+CREATE TABLE `emp_unit` (
+  `emp_unit_id` bigint(50) NOT NULL,
+  `unitID` bigint(50) NOT NULL,
+  `empID` bigint(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -59,7 +72,7 @@ CREATE TABLE `farm` (
   `lon` decimal(12,8) DEFAULT NULL,
   `ownerID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -81,7 +94,7 @@ CREATE TABLE `owner` (
   `lname` varchar(75) NOT NULL,
   `preID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -102,7 +115,7 @@ CREATE TABLE `parent` (
   `sowID` bigint(50) NOT NULL,
   `parent` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -115,7 +128,7 @@ CREATE TABLE `position` (
   `posID` bigint(20) NOT NULL,
   `pos_name` varchar(100) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
   `farmID` bigint(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -137,7 +150,7 @@ CREATE TABLE `pos_emp` (
   `posID` bigint(50) NOT NULL,
   `empID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -157,7 +170,7 @@ CREATE TABLE `prename` (
   `preID` bigint(50) NOT NULL,
   `prename` varchar(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -184,7 +197,7 @@ CREATE TABLE `sow` (
   `breed` varchar(10) NOT NULL,
   `origin` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -214,7 +227,7 @@ CREATE TABLE `sowbirth` (
   `total_weight` decimal(10,2) NOT NULL,
   `empID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -228,7 +241,7 @@ CREATE TABLE `sowblock` (
   `sowID` bigint(50) NOT NULL,
   `unit_block_id` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -254,7 +267,7 @@ CREATE TABLE `sowmating` (
   `sowID` bigint(50) NOT NULL,
   `empID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -285,7 +298,7 @@ CREATE TABLE `sowsemen` (
   `empID` bigint(50) NOT NULL,
   `SemenBarcode` varchar(50) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -300,7 +313,7 @@ CREATE TABLE `sowvaccine` (
   `vaccineID` bigint(50) NOT NULL,
   `empID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -314,7 +327,7 @@ CREATE TABLE `unit` (
   `unitName` varchar(50) NOT NULL,
   `farmID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -337,7 +350,7 @@ CREATE TABLE `unit_block` (
   `col` varchar(10) NOT NULL,
   `unitID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -365,7 +378,7 @@ CREATE TABLE `user` (
   `password` varchar(50) NOT NULL,
   `isAdmin` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -387,7 +400,7 @@ CREATE TABLE `vaccine` (
   `vaccineCode` varchar(50) DEFAULT NULL,
   `farmID` bigint(50) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp()
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -400,7 +413,16 @@ CREATE TABLE `vaccine` (
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`empID`),
   ADD KEY `preID` (`preID`),
-  ADD KEY `farmID` (`farmID`);
+  ADD KEY `farmID` (`farmID`),
+  ADD KEY `unitID` (`unitID`);
+
+--
+-- Indexes for table `emp_unit`
+--
+ALTER TABLE `emp_unit`
+  ADD PRIMARY KEY (`emp_unit_id`),
+  ADD KEY `unitID` (`unitID`,`empID`),
+  ADD KEY `fk1` (`empID`);
 
 --
 -- Indexes for table `farm`
@@ -541,6 +563,12 @@ ALTER TABLE `employee`
   MODIFY `empID` bigint(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `emp_unit`
+--
+ALTER TABLE `emp_unit`
+  MODIFY `emp_unit_id` bigint(50) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `farm`
 --
 ALTER TABLE `farm`
@@ -644,8 +672,16 @@ ALTER TABLE `vaccine`
 -- Constraints for table `employee`
 --
 ALTER TABLE `employee`
+  ADD CONSTRAINT `employee_ibfk3` FOREIGN KEY (`unitID`) REFERENCES `unit` (`unitID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`farmID`) REFERENCES `farm` (`farmID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`preID`) REFERENCES `prename` (`preID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `emp_unit`
+--
+ALTER TABLE `emp_unit`
+  ADD CONSTRAINT `fk1` FOREIGN KEY (`empID`) REFERENCES `employee` (`empID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk2` FOREIGN KEY (`unitID`) REFERENCES `unit` (`unitID`);
 
 --
 -- Constraints for table `farm`
