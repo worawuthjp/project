@@ -37,9 +37,9 @@ module.exports = function(app,con){
       })
     });
 
-    app.get('/get/block/RFID',(req,res) => {
+    app.get('/get/block/barcode',(req,res) => {
       var blockCode = req.query.id;
-      var sql = "SELECT * FROM block WHERE blockCode='"+blockCode+"' ";
+      var sql = "SELECT * FROM unit_block WHERE blockCode='"+blockCode+"' ";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);

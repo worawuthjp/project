@@ -20,6 +20,7 @@ module.exports = function(app,con){
       res.send(data);
     });
   });
+
   app.put('/update/sow/pair',(req,res)=>{
       var sowcode = req.query.sowcode;
       var uhf = req.query.uhf;
