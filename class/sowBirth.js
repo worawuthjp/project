@@ -57,8 +57,7 @@ module.exports = function (app, con) {
 
     var created_at = dateFormat(now, "yyyy-mm-dd");
     var updated_at = dateFormat(now, "yyyy-mm-dd");
-    var sql = sprintf(
-      "INSERT INTO sowbirth(sowID,alive,died,mummy,total_weight,empID,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s','%s','%s')",sowID,alive,died,mummy,total_weight,userID,created_at,updated_at);
+    var sql = sprintf("INSERT INTO sowbirth(sowID,alive,died,mummy,total_weight,empID,created_at,updated_at) VALUES('%s','%s','%s','%s','%s','%s','%s','%s')",sowID,alive,died,mummy,total_weight,userID,created_at,updated_at);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       var data = JSON.stringify({ status: "success" });
