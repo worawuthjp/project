@@ -20,9 +20,7 @@ module.exports = function (app, con) {
   app.get("/get/sowbirth", (req, res) => {
     var sowBirthID = req.query.id;
     var sql =
-      "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowBirthID = '" +
-      sowBirthID +
-      "'";
+      "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowBirthID = '" +sowBirthID +"'";
     con.query(sql, function (err, result, field) {
       if (err) throw err;
       var data = JSON.stringify(result);
@@ -32,9 +30,7 @@ module.exports = function (app, con) {
   app.get("/get/sowbirth/sowID", (req, res) => {
     var sowID = req.query.id;
     var sql =
-      "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowID = '" +
-      sowID +
-      "'";
+      "SELECT * FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID where sowbirth.sowID = '" +sowID +"'";
     con.query(sql, function (err, result, field) {
       if (err) throw err;
       var data = JSON.stringify(result);
@@ -62,16 +58,7 @@ module.exports = function (app, con) {
     var created_at = dateFormat(now, "yyyy-mm-dd");
     var updated_at = dateFormat(now, "yyyy-mm-dd");
     var sql = sprintf(
-      "INSERT INTO sowbirth(sowID,alive,died,mummy,total_weight,empID,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s,'%s','%s')",
-      sowID,
-      alive,
-      died,
-      mummy,
-      total_weight,
-      userID,
-      created_at,
-      updated_at
-    );
+      "INSERT INTO sowbirth(sowID,alive,died,mummy,total_weight,empID,created_at,updated_at) VALUES('%s','%s','%s,'%s','%s','%s,'%s','%s')",sowID,alive,died,mummy,total_weight,userID,created_at,updated_at);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       var data = JSON.stringify({ status: "success" });
@@ -94,13 +81,7 @@ module.exports = function (app, con) {
     var mummy = req.body.mummy;
     var total_weight = req.body.total_weight;
     var sql = sprintf(
-      "UPDATE sowbirth SET alive='%s',died='%s',mummy='%s',total_weight='%s' WHERE sowBirthID='%s",
-      alive,
-      died,
-      mummy,
-      total_weight,
-      id
-    );
+      "UPDATE sowbirth SET alive='%s',died='%s',mummy='%s',total_weight='%s' WHERE sowBirthID='%s",alive,died,mummy,total_weight,id);
     con.query(sql, (err, result, field) => {
       if (err) throw err;
       if (result) res.send({ status: "success" });
