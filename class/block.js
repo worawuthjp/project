@@ -19,7 +19,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/block/All',(req,res) => {
-      var sql = "SELECT * FROM unit_block";
+      var sql = "SELECT * FROM unit_block INNER JOIN unit ON unit.unitID = unit_block.unitID";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -29,7 +29,7 @@ module.exports = function(app,con){
     
     app.get('/get/block/id',(req,res) => {
       var blockID = req.query.id;
-      var sql = "SELECT * FROM unit_block WHERE blockID='"+blockID+"'";
+      var sql = "SELECT * FROM unit_block INNER JOIN unit ON unit.unitID = unit_block.unitID WHERE blockID='"+blockID+"' ORDER BY unit_block.unit_block_id DESC";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -39,7 +39,7 @@ module.exports = function(app,con){
 
     app.get('/get/block/barcode',(req,res) => {
       var blockCode = req.query.id;
-      var sql = "SELECT * FROM unit_block WHERE blockCode='"+blockCode+"' ";
+      var sql = "SELECT * FROM unit_block INNER JOIN unit ON unit.unitID = unit_block.unitID WHERE blockCode='"+blockCode+"' ORDER BY unit_block.unit_block_id DESC";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
