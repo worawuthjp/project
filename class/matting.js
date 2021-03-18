@@ -9,9 +9,15 @@ module.exports = function(app,con){
         var sowID = req.query.sowID;
         var userID = req.query.userID;
 
-        if(req.body){
-          sowID = req.body.sowID;
+        if(req.body.sowSemenID){
           sowSemenID = req.body.sowSemenID;
+        }
+
+        if(req.body.sowID){
+          sowID = req.body.sowID;
+        }
+
+        if(req.body.userID){
           userID = req.body.userID;
         }
         
