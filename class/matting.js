@@ -15,7 +15,7 @@ module.exports = function(app,con){
           userID = req.body.userID;
         }
         
-        var sql = "INSERT INTO sowmating(sowSementID,sowID,empID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
+        var sql = "INSERT INTO sowmating(sowSemenID,sowID,empID,created_at,updated_at) Values('"+sowSemenID+"','"+sowID+"','"+userID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')"
         con.query(sql,function(err,result,filed){
           if(err) throw err;
           var data = JSON.stringify({"status":"success"});
