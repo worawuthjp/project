@@ -3,7 +3,7 @@ var dateFormat = require('dateformat');
 var now = new Date();
 module.exports = function(app,con){
 
-    app.post('/add/sowVaccine',(req,res)=>{
+    app.post('/add/sowvaccine',(req,res)=>{
         var sowID = req.body.sowID;
         var vaccineID = req.body.vaccineID;
         var empID = req.body.empID;
@@ -19,7 +19,7 @@ module.exports = function(app,con){
         });
     });
     
-    app.get('/get/sowVaccine/All',(req,res) => {
+    app.get('/get/sowvaccine/All',(req,res) => {
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID ";
       con.query(sql,function(err,result,field){
         if(err) throw err;
@@ -28,7 +28,7 @@ module.exports = function(app,con){
       });
     });
     
-    app.get('/get/sowVaccine/All/unit',(req,res) => {
+    app.get('/get/sowvaccine/All/unit',(req,res) => {
       var unitID = req.query.id;
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID WHERE sow.sowID IN (SELECT sowblock.sowID FROM sowblock INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id WHERE sowblock.status = 1 and unit_block.unitID = '"+unitID+"')";
       con.query(sql,function(err,result,field){
@@ -38,7 +38,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.get('/get/sowVaccine',(req,res) => {
+    app.get('/get/sowvaccine',(req,res) => {
       var sowVaccineID = req.query.id;
       var sql = "SELECT * FROM sowVaccine INNER JOIN sow ON sow.sowID = sowVaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowVaccine.vaccineID INNER JOIN employee ON employee.empID = sowVaccine.empID WHERE sowVaccine.sowVaccineID='"+sowVaccineID+"' ";
       con.query(sql,function(err,result,field){
@@ -48,7 +48,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/delete/sowVaccine',(req,res)=>{
+    app.post('/delete/sowvaccine',(req,res)=>{
       var id = req.body.id;
       var sql = sprintf("DELETE FROM sowVaccine WHERE sowVaccineID='%s'",id);
       con.query(sql,(err,result,field)=>{
@@ -61,7 +61,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/update/sowVaccine',(req,res)=>{
+    app.post('/update/sowvaccine',(req,res)=>{
       var sowVaccineID = req.body.id;
       var sowID = req.body.sowID;
       var vaccineID = req.body.vaccineID;
