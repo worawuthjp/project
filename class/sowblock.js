@@ -18,8 +18,10 @@ module.exports = function(app,con){
       });
       
       app.get('/get/sowblock',(req,res) => {
-        var sowBlockID = req.query.id;
-        var sql = "SELECT * FROM sowblock INNER JOIN sow ON sow.sowID = sowblock.sowID INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id where sowblock.sow_block_id = '"+sowBlockID +"'";
+        var sowBlockID = req.query.code;
+        var ID = req.query.id;
+        var unitID = req.query.unitID;
+        var sql = "SELECT * FROM sowblock INNER JOIN sow ON sow.sowID = sowblock.sowID INNER JOIN unit_block ON unit_block.unit_block_id = sowblock.unit_block_id where (unit_block.blockcode = '"+sowBlockID +"' OR sowblock.sowBlockID = '"+ID+"' OR unit_block.unitID = '"+unitID+"' ) and sowblock.status <> 0";
         con.query(sql,function(err,result,field){
           if(err) throw err;
           var data = JSON.stringify(result);
