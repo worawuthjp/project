@@ -1,6 +1,7 @@
 const { sprintf } = require("sprintf-js");
 var dateFormat = require('dateformat');
 var now = new Date();
+
 module.exports = function(app,con){
 
     app.post('/add/sowvaccine',(req,res)=>{
@@ -14,7 +15,7 @@ module.exports = function(app,con){
         console.log(sql);
         con.query(sql,function(err,result,field){
           if(err) throw err;
-          var data = JSON.stringify({'status':'sucess'});
+          var data = JSON.stringify({'status':'success'});
           res.send(data);
         });
     });
