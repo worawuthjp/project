@@ -8,9 +8,10 @@ module.exports = function(app,con){
         var sowID = req.body.sowID;
         var vaccineID = req.body.vaccineID;
         var empID = req.body.empID;
+        var comment = req.body.comment;
         var date = dateFormat(now,'yyyy-mm-dd HH:MM:ss');
       
-        var sql = "INSERT INTO sowVaccine (sowID,vaccineID,empID,comment,created_at,updated_at) VALUES('"+sowID+"','"+vaccineID+"','"+empID+"','"+date+"','"+date+"')";
+        var sql = "INSERT INTO sowVaccine (sowID,vaccineID,empID,comment,created_at,updated_at) VALUES('"+sowID+"','"+vaccineID+"','"+empID+"','"+comment+"','"+date+"','"+date+"')";
         console.log(sql);
         con.query(sql,function(err,result,field){
           if(err) throw err;
