@@ -1,6 +1,5 @@
 const { sprintf } = require("sprintf-js");
 var dateFormat = require('dateformat');
-const vaccine = require("./vaccine");
 var now = new Date();
 module.exports = function(app,con){
 
