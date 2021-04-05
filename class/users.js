@@ -1,6 +1,7 @@
 const { sprintf } = require("sprintf-js");
 var dateFormat = require("dateformat");
 var now = new Date();
+var dateNow = dateFormat(now,"yyyy-mm-dd HH:MM:ss")
 
 module.exports = function (app, con) {
 
@@ -13,6 +14,29 @@ module.exports = function (app, con) {
       } else {
         res.send({ status: "not found data" });
       }
+    });
+  });
+
+  app.get("/get/position/All", (req, res) => {
+    var sql = "SELECT * FROM position";
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      if (result.length > 0) {
+        res.send(JSON.stringify(result));
+      } else {
+        res.send({ status: "not found data" });
+      }
+    });
+  });
+
+  app.post("/add/position", (req, res) => {
+    var name = req.body.name;
+    var farmID = req.body.farmID;
+    var sql = sprintf("INSERT INTO `position` (pos_name,created_at,updated_at,farmID) VALUES('%s','%s','%s','%s')",name,dateNow,dateNow,farmID);
+    console.log(sql);
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      res.send(JSON.stringify({"status":"success"}));
     });
   });
 
@@ -91,13 +115,13 @@ module.exports = function (app, con) {
       username = req.query.username;
       password = req.query.password;
     }
-    var sql ="SELECT * FROM user WHERE username='" +username +"' and password = '" +password +"'";
+    var sql ="SELECT * FROM user INNER JOIN employee ON employee.empID = user.empID WHERE username='" +username +"' and password = '" +password +"'";
     console.log(sql);
     con.query(sql, function (err, result, field) {
       if (err) throw err;
       if (result.length != 0) {
         console.log(result.length);
-        var data = {status: "success",username: result[0].username,empID: result[0].empID};
+        var data = {status: "success",username: result[0].username,empID: result[0].empID,farmID : result[0].farmID};
         res.send(JSON.stringify(data));
       } else {
         res.send(JSON.stringify({ status: "not found data" }));
