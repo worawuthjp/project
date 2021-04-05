@@ -40,8 +40,30 @@ module.exports = function (app, con) {
     });
   });
 
+  app.put("/update/position", (req, res) => {
+    var name = req.body.name;
+    var id = req.body.id;
+    var sql = sprintf("UPDATE position SET pos_name = '%s' WHERE posID = '%s' ",name,id);
+    console.log(sql);
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      res.send(JSON.stringify({"status":"success"}));
+    });
+  });
+
+  app.delete("/delete/position", (req, res) => {
+    var id = req.body.id;
+    var sql = sprintf("DELETE FROM position WHERE posID = '%s' ",id);
+    console.log(sql);
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      res.send(JSON.stringify({"status":"success"}));
+    });
+  });
+
   app.get("/get/employee/All", (req, res) => {
-    var sql ="SELECT * FROM employee INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID INNER JOIN unit ON unit.unitID = employee.unitID";
+    var sql ="SELECT * FROM employee LEFT JOIN pos_emp ON pos_emp.empID = employee.empID LEFT JOIN position ON position.posID = pos_emp.posID LEFT JOIN unit ON unit.unitID = employee.unitID";
+    console.log(sql);
     con.query(sql, (err, result, filed) => {
       if (err) throw err;
       if (result.length > 0) {
@@ -97,9 +119,10 @@ module.exports = function (app, con) {
     var pre = req.body.pre;
     var fname = req.body.fname;
     var lname = req.body.lname;
-    var birthDate = req.body.birthDate;
+    var empCode = req.body.empCode;
+    var unitID = req.body.unitID;
     var farmID = req.body.farmID;
-    var sql ="INSERT INTO employee(fname,lname,preID,empCode,farmID,created_at,updated_at) VALUES('" +fname +"','" +lname +"','" +pre +"','" +farmID +"','" +dateFormat(now, "yyyy-mm-dd HH:MM:ss") +"','" +dateFormat(now, "yyyy-mm-dd HH:MM:ss") +"')";
+    var sql ="INSERT INTO employee(fname,lname,preID,empCode,farmID,created_at,updated_at,unitID) VALUES('" +fname +"','" +lname +"','" +pre +"','"+empCode+"','" +farmID +"','" +dateFormat(now, "yyyy-mm-dd HH:MM:ss") +"','" +dateFormat(now, "yyyy-mm-dd HH:MM:ss") +"','"+unitID+"')";
     console.log(sql);
     con.query(sql, function (err, result, field) {
       if (err) throw err;
@@ -147,7 +170,8 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user/All", (req, res) => {
-    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID ";
+    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID LEFT JOIN pos_emp ON pos_emp.empID = employee.empID LEFT JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID ";
+    console.log(sql);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       if (result.length != 0) {
