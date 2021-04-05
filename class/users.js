@@ -123,7 +123,7 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user/All", (req, res) => {
-    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID ";
+    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID ";
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       if (result.length != 0) {
@@ -137,7 +137,7 @@ module.exports = function (app, con) {
   });
 
   app.get("/get/user", (req, res) => {
-    var sql ="SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE employee.empID = '" +req.query.id +"'";
+    var sql ="SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN pos_emp ON pos_emp.empID = employee.empID INNER JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE employee.empID = '" +req.query.id +"'";
     console.log(req.query.id);
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
@@ -149,7 +149,7 @@ module.exports = function (app, con) {
   app.get("/get/user/barcode", (req, res) => {
     var barcode = req.query.id;
     var sql =
-    "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN unit ON unit.unitID = employee.unitID  WHERE employee.empCode = '" +barcode +"'";
+    "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.username,user.isAdmin,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID INNER JOIN unit ON unit.unitID = employee.unitID  WHERE employee.empCode = '" +barcode +"'";
     con.query(sql, function (err, result, field) {
       if (err) throw err;
       var data = JSON.stringify(result);
@@ -178,7 +178,12 @@ module.exports = function (app, con) {
     var username = req.body.username;
     var password = req.body.password;
     var isAdmin = req.body.isAdmin;
-    var sql = sprintf("UPDATE user SET username='%s',password = '%s',isAdmin='%s' WHERE empID='%s' ",username,password,isAdmin,id);
+    if(password){
+      var sql = sprintf("UPDATE user SET username='%s',password = '%s',isAdmin='%s' WHERE empID='%s' ",username,password,isAdmin,id);
+    }else{
+      var sql = sprintf("UPDATE user SET username='%s',isAdmin='%s' WHERE empID='%s' ",username,isAdmin,id);
+    }
+    console.log(sql);
     con.query(sql, (err, result, field) => {
       if (err) throw err;
       if (result) {
@@ -192,6 +197,21 @@ module.exports = function (app, con) {
   app.post("/delete/employee", (req, res) => {
     var id = req.body.id;
     var sql = sprintf("DELETE FROM employee WHERE empID='%s'", id);
+    con.query(sql, (err, result, field) => {
+      if (err) throw err;
+      if (result) {
+        sql = sprintf("DELETE FROM user WHERE empID='%s'", id);
+        res.send({ status: "success" });
+      } else {
+        res.send({ status: "errors" });
+      }
+    });
+  });
+
+  app.post("/delete/user", (req, res) => {
+    var id = req.body.id;
+    var sql = sprintf("DELETE FROM user WHERE empID='%s'", id);
+    console.log(sql);
     con.query(sql, (err, result, field) => {
       if (err) throw err;
       if (result) {
