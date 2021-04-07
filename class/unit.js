@@ -7,13 +7,27 @@ module.exports = function(app,con){
   app.post('/add/unit',(req,res)=>{
     var farmID = req.body.farmID;
     var unitName = req.body.unitName;
+    var col = req.body.col;
+    var row = req.body.row;
   
     var sql = "INSERT INTO unit (unitName,farmID,created_at,updated_at) VALUES('"+unitName+"','"+farmID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
     console.log(sql);
     con.query(sql,function(err,result,field){
       if(err) throw err;
-      var data = JSON.stringify({'status':'sucess'});
+      var unitID = result.insertId;
+      var code = '';
+      for(var i=0;i<row;i++){
+        for(var j=0;j<col;j++){
+          code = farmID+''+unitID+(i+1)+(j+1);
+          sql = "INSERT INTO unit_block (blockCode,row,col,unitID,created_at,updated_at) VALUES('"+code+"','"+(i+1)+"','"+(j+1)+"','"+unitID+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"','"+dateFormat(now,'yyyy-mm-dd HH:MM:ss')+"')";
+          con.query(sql,function(err,result,field){
+            
+          });
+        }
+      }
+      var data = JSON.stringify({'status':'success'});
       res.send(data);
+      
     });
   });
  
@@ -36,9 +50,9 @@ module.exports = function(app,con){
     })
   });
   
-  app.post('/delete/unit',(req,res)=>{
+  app.delete('/delete/unit',(req,res)=>{
     var id = req.body.unit;
-    var sql = sprintf("DELETE FROM block WHERE unitID='%s'",id);
+    var sql = sprintf("DELETE FROM unit_block WHERE unitID='%s'",id);
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       if(result){
@@ -57,11 +71,10 @@ module.exports = function(app,con){
     })
   });
 
-  app.post('/update/unit',(req,res)=>{
+  app.put('/update/unit',(req,res)=>{
     var id = req.body.id;
-    var unitCode = req.body.unitCode;
     var unitName = req.body.unitName;
-    var sql = sprintf("UPDATE unit SET unitCode='%s',unitName='%s' WHERE unitID='%s'",unitCode,unitName,id);
+    var sql = sprintf("UPDATE unit SET unitName='%s' WHERE unitID='%s'",unitName,id);
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       if(result){
