@@ -38,6 +38,20 @@ module.exports = function(app,con){
         res.send(data);
       });
     });
+
+    app.put('/update/sow',(req,res)=>{
+      var sowcode = req.body.sowcode;
+      var id = req.body.id;
+      var recType = req.body.recType;
+      var breed = req.body.breed;
+      var sql = sprintf("UPDATE sow SET sowCode='%s',recType='%s',breed='%s'  WHERE sowID= '%s'",sowcode,recType,breed,id);
+      console.log(sql);
+      con.query(sql,function(err,result,field){
+        if(err) throw err;
+        var data = JSON.stringify({'status':'success'});
+        res.send(data);
+      });
+    });
   
   app.get('/get/sow/All',(req,res) => {
     var sql = "SELECT * FROM sow";
