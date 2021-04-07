@@ -18,6 +18,8 @@ app.use(function(req,res,next){
 app.get('/', (req, res) => {
   res.send('BackEnd WEB SERVICE');
 });
+//summary
+require('./class/summary')(app,con)
 
 //user
 require('./class/farm')(app,con)

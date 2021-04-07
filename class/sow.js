@@ -68,6 +68,23 @@ module.exports = function(app,con){
       res.send(data);
     })
   });
+
+  app.get('/get/sow/sire',(req,res) => {
+    var sql = "SELECT * FROM sow WHERE recType='S'";
+    con.query(sql,function(err,result,field){
+      if(err) throw err;
+      var data = JSON.stringify(result);
+      res.send(data);
+    })
+  });
+  app.get('/get/sow/dam',(req,res) => {
+    var sql = "SELECT * FROM sow WHERE recType='D'";
+    con.query(sql,function(err,result,field){
+      if(err) throw err;
+      var data = JSON.stringify(result);
+      res.send(data);
+    })
+  });
   
   app.get('/get/sow/sowCode',(req,res) => {
     var sowCode = req.query.id;
