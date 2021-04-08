@@ -30,7 +30,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/sowmating/All',(req,res)=>{
-      var sql = "SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID";
+      var sql = "SELECT sow.*,Sire.sowCode As SIRE,employee.*,sowmating.status,sowmating.* FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID";
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -88,12 +88,13 @@ module.exports = function(app,con){
       })
     });
       
-    app.post('/update/sowmating',(req,res)=>{
+    app.put('/update/sowmating',(req,res)=>{
       var id = req.body.id;
       var sowSemenID = req.body.sowSemenID;
       var sowID = req.body.sowID;
       var userID = req.body.userID;
-      var sql = sprintf("UPDATE sowmating SET sowSemenID='%s',sowID='%s',userID='%s' WHERE sowMatingID='%s'",sowSemenID,sowID,userID,id);
+      var status = req.body.status;
+      var sql = sprintf("UPDATE sowmating SET sowSemenID='%s',sowID='%s',empID='%s',status='%s' WHERE sowMatingID='%s'",sowSemenID,sowID,userID,status,id);
       console.log(sql)
       con.query(sql,(err,result,field)=>{
         if(err) throw err;

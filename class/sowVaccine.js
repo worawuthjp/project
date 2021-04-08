@@ -22,7 +22,7 @@ module.exports = function(app,con){
     });
     
     app.get('/get/sowvaccine/All',(req,res) => {
-      var sql = "SELECT * FROM sowvaccine INNER JOIN sow ON sow.sowID = sowvaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowvaccine.vaccineID INNER JOIN employee ON employee.empID = sowvaccine.empID ";
+      var sql = "SELECT * FROM sowvaccine INNER JOIN sow ON sow.sowID = sowvaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowvaccine.vaccineID INNER JOIN employee ON employee.empID = sowvaccine.empID ORDER BY sowvaccine.sowVaccineID";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -50,7 +50,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/delete/sowvaccine',(req,res)=>{
+    app.delete('/delete/sowvaccine',(req,res)=>{
       var id = req.body.id;
       var sql = sprintf("DELETE FROM sowvaccine WHERE sowVaccineID='%s'",id);
       con.query(sql,(err,result,field)=>{
@@ -63,13 +63,15 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/update/sowvaccine',(req,res)=>{
+    app.put('/update/sowvaccine',(req,res)=>{
       var sowVaccineID = req.body.id;
       var sowID = req.body.sowID;
       var vaccineID = req.body.vaccineID;
       var empID = req.body.empID;
+      var comment = req.body.comment;
       var date = dateFormat(now,'yyyy-mm-dd HH:MM:ss');
-      var sql = sprintf("UPDATE sowvaccine SET sowID='%s',vaccineID='%s',empID='%s',updated_at = '%s' WHERE sowVaccineID='%s'",sowID,vaccineID,empID,date,sowVaccineID);
+      var sql = sprintf("UPDATE sowvaccine SET sowID='%s',vaccineID='%s',empID='%s',comment='%s',updated_at = '%s' WHERE sowVaccineID='%s'",sowID,vaccineID,empID,comment,date,sowVaccineID);
+      console.log(sql);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){

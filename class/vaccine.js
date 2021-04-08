@@ -13,13 +13,13 @@ module.exports = function(app,con){
         console.log(sql);
         con.query(sql,function(err,result,field){
           if(err) throw err;
-          var data = JSON.stringify({'status':'sucess'});
+          var data = JSON.stringify({'status':'success'});
           res.send(data);
         });
     });
     
     app.get('/get/vaccine/All',(req,res) => {
-      var sql = "SELECT * FROM vaccine";
+      var sql = "SELECT * FROM vaccine INNER JOIN farm ON farm.farmID = vaccine.farmID";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -29,7 +29,7 @@ module.exports = function(app,con){
     
     app.get('/get/vaccine',(req,res) => {
       var vaccineID = req.query.id;
-      var sql = "SELECT * FROM vaccine WHERE vaccineID='"+vaccineID+"'";
+      var sql = "SELECT * FROM vaccine INNER JOIN farm ON farm.farmID = vaccine.farmID WHERE vaccineID='"+vaccineID+"'";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);
@@ -47,9 +47,9 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/delete/vaccine',(req,res)=>{
+    app.delete('/delete/vaccine',(req,res)=>{
       var id = req.body.id;
-      var sql = sprintf("DELETE FROM vaccine WHERE vaccieID='%s'",id);
+      var sql = sprintf("DELETE FROM vaccine WHERE vaccineID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){
@@ -60,7 +60,7 @@ module.exports = function(app,con){
       })
     });
 
-    app.post('/update/vaccine',(req,res)=>{
+    app.put('/update/vaccine',(req,res)=>{
       var vaccineID = req.body.id;
       var vaccineName = req.body.vaccineName;
       var vaccineCode = req.body.vaccineCode;
