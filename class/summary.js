@@ -56,7 +56,7 @@ module.exports = function(app,con){
   });
 
   app.get('/get/report/dam',(req,res)=>{
-    var sql = "SELECT sow.*,Sire.sowCode As Sire,sowmating.*,employee.*,sowsemen.SemenBarcode,sowbirth.* FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID INNER JOIN sowbirth ON sowbirth.sowID = sow.sowID WHERE sow.recType = 'D'";
+    var sql = "SELECT sow.*,sowbirth.* FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID WHERE sow.recType = 'D'";
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       var data = JSON.stringify(result);
