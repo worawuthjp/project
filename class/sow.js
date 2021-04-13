@@ -110,9 +110,9 @@ module.exports = function(app,con){
     })
   });
 
-  app.post('/delete/sow',(req,res) => {
+  app.delete('/delete/sow',(req,res) => {
     var sowID =  req.body.id
-    var sql = "UPDATE sow SET isDel = 1 WHERE sowID = '"+sowID+"'";
+    var sql = "DELETE FROM sow WHERE sowID = '"+sowID+"'";
     con.query(sql,function(err,result,field){
       if(err) throw err;
       if(result){

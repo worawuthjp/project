@@ -16,13 +16,13 @@ module.exports = function(app,con){
         con.query(sql,[data],function(err,result,field){
           if(err) throw err;
 
-          var d = JSON.stringify({'status':'success'});
+          var d = JSON.stringify([{'status':'success'}]);
           res.send(d);
         });
     });
     
     app.get('/get/sowvaccine/All',(req,res) => {
-      var sql = "SELECT * FROM sowvaccine INNER JOIN sow ON sow.sowID = sowvaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowvaccine.vaccineID INNER JOIN employee ON employee.empID = sowvaccine.empID ORDER BY sowvaccine.sowVaccineID";
+      var sql = "SELECT * FROM sowvaccine INNER JOIN sow ON sow.sowID = sowvaccine.sowID INNER JOIN vaccine ON vaccine.vaccineID = sowvaccine.vaccineID INNER JOIN employee ON employee.empID = sowvaccine.empID ORDER BY sowvaccine.sowVaccineID DESC";
       con.query(sql,function(err,result,field){
         if(err) throw err;
         var data = JSON.stringify(result);

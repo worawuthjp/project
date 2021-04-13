@@ -30,7 +30,7 @@ module.exports = function(app,con){
     });
 
     app.get('/get/sowmating/All',(req,res)=>{
-      var sql = "SELECT sow.*,Sire.sowCode As SIRE,employee.*,sowmating.status,sowmating.* FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID";
+      var sql = "SELECT sow.*,Sire.sowCode As SIRE,DATE(sowmating.created_at) AS date_mating,employee.*,sowmating.status,sowmating.* FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID ORDER BY sowmating.sowMatingID DESC";
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
@@ -45,7 +45,7 @@ module.exports = function(app,con){
 
     app.get('/get/sowmating',(req,res)=>{
       var id = req.query.id;
-      var sql = sprintf("SELECT * FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE sowmating.sowMatingID='%s'",id);
+      var sql = sprintf("SELECT *,DATE(sowmating.created_at) As DATE FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE sowmating.sowMatingID='%s'",id);
       con.query(sql,(err,result,field)=>{
         if(err) throw err
         if(result){
