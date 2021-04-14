@@ -49,6 +49,16 @@ module.exports = function(app,con){
       res.send(data);
     })
   });
+
+  app.get('/get/unit/search',(req,res) => {
+    var searchTxt = req.query.search;
+    var sql = "SELECT * FROM unit WHERE unitID LIKE'%"+searchTxt+"%' OR unitName LIKE '%"+searchTxt+"%'";
+    con.query(sql,function(err,result,field){
+      if(err) throw err;
+      var data = JSON.stringify(result);
+      res.send(data);
+    })
+  });
   
   app.delete('/delete/unit',(req,res)=>{
     var id = req.body.unit;

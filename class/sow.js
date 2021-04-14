@@ -62,6 +62,17 @@ module.exports = function(app,con){
     });
   
   });
+
+  app.get('/get/sow/search',(req,res) => {
+    var searchTxt = req.query.search;
+    var sql = "SELECT * FROM sow WHERE sowCode LIKE '%"+searchTxt+"%'";
+    con.query(sql,function(err,result,field){
+      if(err) throw err;
+      var data = JSON.stringify(result);
+      res.send(data);
+    });
+  
+  });
   
   app.get('/get/sow/id',(req,res) => {
     var sowID = req.query.id;

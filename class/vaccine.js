@@ -37,6 +37,16 @@ module.exports = function(app,con){
       })
     });
 
+    app.get('/get/vaccine/search',(req,res) => {
+      var searchTxt = req.query.search;
+      var sql = "SELECT * FROM vaccine INNER JOIN farm ON farm.farmID = vaccine.farmID WHERE vaccineName LIKE '%"+searchTxt+"%' OR vaccineCode LIKE '%"+searchTxt+"%'";
+      con.query(sql,function(err,result,field){
+        if(err) throw err;
+        var data = JSON.stringify(result);
+        res.send(data);
+      })
+    });
+
     app.get('/get/vaccine/Barcode',(req,res) => {
       var vaccineCode = req.query.id;
       var sql = "SELECT * FROM vaccine WHERE vaccineCode='"+vaccineCode+"' ";

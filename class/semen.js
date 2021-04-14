@@ -33,6 +33,17 @@ module.exports = function(app,con){
       res.send(data);
     })
   });
+
+  app.get('/get/sowsemen/search',(req,res) => {
+    var searchTxt = req.query.search;
+    var sql = "SELECT * FROM sowsemen INNER JOIN sow ON sow.sowID = sowsemen.sowID WHERE sow.sowCode LIKE '%"+searchTxt+"%'";
+    con.query(sql,function(err,result,field){
+      if(err) throw err;
+      var data = JSON.stringify(result);
+      res.send(data);
+    })
+  });
+
   app.post('/add/sowsemen',(req,res)=>{
     var barcode = req.body.barcode;
     var sowID = req.body.sowID;

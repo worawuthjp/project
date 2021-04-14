@@ -29,6 +29,19 @@ module.exports = function (app, con) {
     });
   });
 
+  app.get("/get/position/search", (req, res) => {
+    var search = req.query.search;
+    var sql = "SELECT * FROM position WHERE position.pos_name LIKE '%"+search+"%'";
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      if (result) {
+        res.send(JSON.stringify(result));
+      } else {
+        res.send({ status: "not found data" });
+      }
+    });
+  });
+
   app.post("/add/position", (req, res) => {
     var name = req.body.name;
     var farmID = req.body.farmID;
@@ -67,6 +80,20 @@ module.exports = function (app, con) {
     con.query(sql, (err, result, filed) => {
       if (err) throw err;
       if (result.length > 0) {
+        res.send(JSON.stringify(result));
+      } else {
+        res.send({ status: "not found data" });
+      }
+    });
+  });
+
+  app.get("/get/employee/search", (req, res) => {
+    var searchTxt = req.query.search;
+    var sql ="SELECT position.*,employee.*,employee.empID as ID,(SELECT username FROM user WHERE empID = ID) As username FROM employee LEFT JOIN pos_emp ON pos_emp.empID = employee.empID LEFT JOIN position ON position.posID = pos_emp.posID LEFT JOIN unit ON unit.unitID = employee.unitID WHERE employee.empCode LIKE '%"+searchTxt+"%' OR employee.fname LIKE '%"+searchTxt+"%' OR employee.lname LIKE '%"+searchTxt+"%' OR position.pos_name LIKE '%"+searchTxt+"%'";
+    console.log(sql);
+    con.query(sql, (err, result, filed) => {
+      if (err) throw err;
+      if (result) {
         res.send(JSON.stringify(result));
       } else {
         res.send({ status: "not found data" });
@@ -197,6 +224,22 @@ module.exports = function (app, con) {
     con.query(sql, function (err, result, filed) {
       if (err) throw err;
       if (result.length != 0) {
+        console.log(result.length);
+        var data = JSON.stringify(result);
+        res.send(data);
+      } else {
+        res.send(JSON.stringify({ status: "not found data" }));
+      }
+    });
+  });
+
+  app.get("/get/user/search", (req, res) => {
+    var searchTxt = req.query.search;
+    var sql = "SELECT unit.unitID,unit.unitName,employee.fname,employee.lname,employee.empCode,employee.farmID,employee.created_at,employee.updated_at,user.empID,user.isAdmin,user.username,user.isAdmin ,position.pos_name FROM employee INNER JOIN user ON user.empID = employee.empID LEFT JOIN pos_emp ON pos_emp.empID = employee.empID LEFT JOIN position ON position.posID = pos_emp.posID INNER JOIN unit ON unit.unitID = employee.unitID WHERE user.username LIKE '%"+searchTxt+"%' OR employee.fname LIKE '%"+searchTxt+"%' OR employee.lname LIKE '%"+searchTxt+"%' OR position.pos_name LIKE '%"+searchTxt+"%' OR employee.empCode LIKE '%"+searchTxt+"%'";
+    console.log(sql);
+    con.query(sql, function (err, result, filed) {
+      if (err) throw err;
+      if (result) {
         console.log(result.length);
         var data = JSON.stringify(result);
         res.send(data);
