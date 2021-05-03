@@ -67,7 +67,7 @@ module.exports = function(app,con){
 
   app.get('/get/report/sire/search',(req,res)=>{
     var searchTxt = req.query.search;
-    var sql = "SELECT sow.*,Sire.sowCode As Sire,sowmating.*,employee.*,sowsemen.SemenBarcode,sowmating.created_at as date FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE Sire.recType = 'S' AND (Sire.sowCode LIKE '%"+searchTxt+"%' OR sow.sowCode LIKE '%"+searchTxt+"%') ORDER BY sowmating.sowMatingID DESC";
+    var sql = "SELECT sow.*,Sire.sowCode As Sire,sowmating.*,employee.*,sowsemen.SemenBarcode,sowmating.created_at as date FROM sowmating INNER JOIN sowsemen ON sowsemen.sowSemenID = sowmating.sowSemenID INNER JOIN sow As Sire ON Sire.sowID = sowsemen.sowID INNER JOIN sow ON sow.sowID = sowmating.sowID INNER JOIN employee ON employee.empID = sowmating.empID WHERE Sire.recType = 'S' AND (Sire.sowCode LIKE '%"+searchTxt+"%' OR sow.sowCode LIKE '%"+searchTxt+"%' OR employee.fname LIKE '"+searchTxt+"' OR CONCAT(employee.fname,' ',employee.lname) LIKE '%"+searchTxt+"%') ORDER BY sowmating.sowMatingID DESC";
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       var data = JSON.stringify(result);
@@ -96,7 +96,7 @@ module.exports = function(app,con){
 
   app.get('/get/report/dam/search',(req,res)=>{
     var searchTxt = req.query.search;
-    var sql = "SELECT sow.*,sowbirth.*,sowbirth.created_at as date FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID WHERE sow.recType = 'D' and (sow.sowCode LIKE '%"+searchTxt+"%') ORDER BY sowbirth.sowBirthID DESC";
+    var sql = "SELECT sow.*,sowbirth.*,sowbirth.created_at as date FROM sowbirth INNER JOIN sow ON sow.sowID = sowbirth.sowID WHERE sow.recType = 'D' and (sow.sowCode LIKE '%"+searchTxt+"%' OR employee.fname LIKE '"+searchTxt+"' OR CONCAT(employee.fname,' ',employee.lname) LIKE '%"+searchTxt+"%') ORDER BY sowbirth.sowBirthID DESC";
     con.query(sql,(err,result,field)=>{
       if(err) throw err;
       var data = JSON.stringify(result);

@@ -6,10 +6,11 @@ module.exports = function(app,con){
     app.post('/add/vaccine',(req,res)=>{
         var vaccineName = req.body.vaccineName;
         var vaccineCode = req.body.vaccineCode;
+        var roundTime = req.body.roundTime;
         var farmID = req.body.farmID;
         var date = dateFormat(now,'yyyy-mm-dd HH:MM:ss');
       
-        var sql = "INSERT INTO vaccine (vaccineName,vaccineCode,farmID,created_at,updated_at) VALUES('"+vaccineName+"','"+vaccineCode+"','"+farmID+"','"+date+"','"+date+"')";
+        var sql = "INSERT INTO vaccine (vaccineName,vaccineCode,roundTime,farmID,created_at,updated_at) VALUES('"+vaccineName+"','"+vaccineCode+"','"+roundTime+"','"+farmID+"','"+date+"','"+date+"')";
         console.log(sql);
         con.query(sql,function(err,result,field){
           if(err) throw err;
@@ -75,8 +76,9 @@ module.exports = function(app,con){
       var vaccineName = req.body.vaccineName;
       var vaccineCode = req.body.vaccineCode;
       var farmID = req.body.farmID;
+      var roundTime = req.body.roundTime;
       var date = dateFormat(now,'yyyy-mm-dd HH:MM:ss');
-      var sql = sprintf("UPDATE vaccine SET vaccineCode='%s',farmID='%s',vaccineName='%s',updated_at = '%s' WHERE vaccineID='%s'",vaccineCode,farmID,vaccineName,date,vaccineID);
+      var sql = sprintf("UPDATE vaccine SET roundTime='%s',vaccineCode='%s',farmID='%s',vaccineName='%s',updated_at = '%s' WHERE vaccineID='%s'",roundTime,vaccineCode,farmID,vaccineName,date,vaccineID);
       con.query(sql,(err,result,field)=>{
         if(err) throw err;
         if(result){
